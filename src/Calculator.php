@@ -36,6 +36,27 @@ class Calculator
 
     public function calculateGroupRevenue(array $products, $groupBy)
     {
-        return [];
+        $groupRevenue = [];
+        $revenue = 0;
+        $i = 1;
+
+        foreach($products as $product) {
+            $revenue += $product->getRevenue();
+
+            if ($i == $groupBy) {
+                $groupRevenue[] = $revenue;
+                $revenue = 0;
+
+                $i = 1;
+            } else {
+                $i++;
+            }
+        }
+
+        if ($revenue != 0) {
+            $groupRevenue[] = $revenue;
+        }
+
+        return $groupRevenue;
     }
 }

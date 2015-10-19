@@ -20,4 +20,9 @@ class Product
     {
         return $this->cost;
     }
+
+    public function getRevenue()
+    {
+        return $this->revenue;
+    }
 }
