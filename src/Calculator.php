@@ -10,7 +10,28 @@ class Calculator
 
     public function calculateGroupCost(array $products, $groupBy)
     {
-        return [];
+        $groupCost = [];
+        $cost = 0;
+        $i = 1;
+
+        foreach($products as $product) {
+            $cost += $product->getCost();
+
+            if ($i == $groupBy) {
+                $groupCost[] = $cost;
+                $cost = 0;
+
+                $i = 1;
+            } else {
+                $i++;
+            }
+        }
+
+        if ($cost != 0) {
+            $groupCost[] = $cost;
+        }
+
+        return $groupCost;
     }
 
     public function calculateGroupRevenue(array $products, $groupBy)

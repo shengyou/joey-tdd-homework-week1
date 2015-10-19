@@ -15,4 +15,9 @@ class Product
         $this->revenue = $revenue;
         $this->sellPrice = $sellPrice;
     }
+
+    public function getCost()
+    {
+        return $this->cost;
+    }
 }
