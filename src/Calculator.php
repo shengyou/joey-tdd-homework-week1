@@ -2,24 +2,31 @@
 
 namespace App;
 
+use Exception;
+
 class Calculator
 {
     public function __construct()
     {
     }
 
-    public function calculateGroupCost(array $products, $groupBy)
+    public function calculateSumByPropertyAndGroup(array $data, $property, $groupBy)
     {
-        $groupCost = [];
-        $cost = 0;
+        $groupSum = [];
+        $sum = 0;
         $i = 1;
 
-        foreach($products as $product) {
-            $cost += $product->getCost();
+        foreach($data as $object) {
+
+            if (!property_exists($object, $property)) {
+                throw new Exception('Property none existed');
+            }
+
+            $sum += $object->{$property};
 
             if ($i == $groupBy) {
-                $groupCost[] = $cost;
-                $cost = 0;
+                $groupSum[] = $sum;
+                $sum = 0;
 
                 $i = 1;
             } else {
@@ -27,36 +34,10 @@ class Calculator
             }
         }
 
-        if ($cost != 0) {
-            $groupCost[] = $cost;
+        if ($sum != 0) {
+            $groupSum[] = $sum;
         }
 
-        return $groupCost;
-    }
-
-    public function calculateGroupRevenue(array $products, $groupBy)
-    {
-        $groupRevenue = [];
-        $revenue = 0;
-        $i = 1;
-
-        foreach($products as $product) {
-            $revenue += $product->getRevenue();
-
-            if ($i == $groupBy) {
-                $groupRevenue[] = $revenue;
-                $revenue = 0;
-
-                $i = 1;
-            } else {
-                $i++;
-            }
-        }
-
-        if ($revenue != 0) {
-            $groupRevenue[] = $revenue;
-        }
-
-        return $groupRevenue;
+        return $groupSum;
     }
 }
