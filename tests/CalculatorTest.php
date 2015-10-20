@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Calculator;
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 
 class CalculatorTest extends PHPUnit_Framework_TestCase
@@ -11,12 +12,6 @@ class CalculatorTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        // todo by joey:
-        // products 的 cost, revenue, sellPrice 在需求與domain上，並沒有一定要連號，應該是獨立存在的。所以不建議 products 用 foreach 塞。這樣描述需求會變成另外一種意思。
-        // 而且上課不是提到，測試程式中，幾乎不會用到 for 跟 if...
-
-        // refactoring by shengyou, 把 $this->data 改以 array 存入
-        // 存入時透過 php 型別轉換成 object，這樣取值時可以模擬物件 property
         $this->data = [
             (object) ['cost' =>  1, 'revenue' => 11, 'sellPrice' => 21],
             (object) ['cost' =>  2, 'revenue' => 12, 'sellPrice' => 22],
@@ -54,16 +49,22 @@ class CalculatorTest extends PHPUnit_Framework_TestCase
         $calculator = new Calculator();
 
         // Act
-        // todo by joey, calculateGroupCost() API的設計，代表未來如果新增別的 property, 想要取得新的總和，就得新增一個 function
-        // 就API設計上的擴充性來說，比較沒這麼有彈性。
-
-        // refactoring by shengyou,
-        // 1. 重新將 API 設計成接受 data (array), property (string), groupBy (int) 擴增彈性
-        // 2. 測試時透過 dataProvider 將設定及預期值帶入，若要增加測試樣本，則新增 dataProvider 回傳的 array 即可
         $actual = $calculator->calculateSumByPropertyAndGroup($this->data, $property, $groupBy);
 
         // Assert
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testExceptionWhenInvalidArgument()
+    {
+        // Arrange
+        $calculator = new Calculator();
+
+        // Act
+        $calculator->calculateSumByPropertyAndGroup($this->data, 'wrong_property', 3);
     }
 
 }

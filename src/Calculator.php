@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Exception;
+use InvalidArgumentException;
 
 class Calculator
 {
@@ -19,7 +19,7 @@ class Calculator
         foreach($data as $object) {
 
             if (!property_exists($object, $property)) {
-                throw new Exception('Property none existed');
+                throw new InvalidArgumentException('Invalid Argument: the given property not found in object');
             }
 
             $sum += $object->{$property};
