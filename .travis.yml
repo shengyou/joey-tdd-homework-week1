@@ -10,4 +10,10 @@ matrix:
     - php: 7.0
     - php: hhvm
 
+before_install:
+  - composer self-update
+
+install:
+    - composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --quiet
+
 script: phpunit --configuration phpunit.xml --coverage-text
