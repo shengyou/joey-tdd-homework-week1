@@ -4,16 +4,19 @@ php:
     - 5.6
     - 7.0
     - hhvm
+    - nightly
 
 matrix:
-  allow_failures:
-    - php: 7.0
-    - php: hhvm
+    allow_failures:
+        - php: 7.0
+        - php: hhvm
+        - php: nightly
 
 before_install:
   - composer self-update
 
 install:
-    - composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --quiet
+    - composer install --prefer-dist --optimize-autoloader --no-interaction
 
-script: phpunit --configuration phpunit.xml --coverage-text
+script:
+    - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.clover
