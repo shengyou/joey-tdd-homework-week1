@@ -18,6 +18,8 @@ install:
 
 script:
     - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.clover
+    - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
+    - CODECLIMATE_REPO_TOKEN=3c42c0270afce27ee1825152b71c2f987bfbd04771c0d4f0b40589252f3efa01 ./vendor/bin/test-reporter
 
 after_script:
     - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '7.0' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
